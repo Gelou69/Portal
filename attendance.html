@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Dashboard - Attendance</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f7f7fc;
+      color: #3b3b57;
+    }
+
+    .container {
+      display: flex;
+      height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      background: #6f5ef0;
+      width: 250px;
+      padding: 30px 20px;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .sidebar .logo {
+      margin-bottom: 40px;
+    }
+
+    .grad-box {
+      background: linear-gradient(135deg, #8c85f7, #8860ff);
+      width: 60px;
+      height: 60px;
+      border-radius: 14px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 28px;
+    }
+
+    .nav-links {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #b5b3df;
+      font-weight: 600;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 8px 15px;
+      border-radius: 7px;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .nav-links a i {
+      font-size: 18px;
+    }
+
+    .nav-links a.active,
+    .nav-links a:hover {
+      background: #7d6cf4;
+      color: white;
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      padding: 30px 40px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .search-input {
+      width: 280px;
+      padding: 12px 20px;
+      border-radius: 40px;
+      border: none;
+      outline: none;
+      font-size: 14px;
+      box-shadow: 0 0 15px rgb(93 93 95 / 12%);
+    }
+
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: white;
+      padding: 8px 12px;
+      border-radius: 50px;
+      box-shadow: 0 0 15px rgb(93 93 95 / 12%);
+    }
+
+    .profile img {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .profile-info {
+      display: flex;
+      flex-direction: column;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    /* Attendance Section */
+    .attendance-section {
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 0 25px rgb(114 114 114 / 10%);
+      text-align: center;
+      min-height: 500px;
+    }
+
+    .attendance-section h2 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: #3b3b57;
+    }
+
+    #videoContainer {
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto 20px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+
+    #video {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    #scanBtn {
+      padding: 14px 30px;
+      background: #6f5ef0;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      margin: 10px;
+    }
+
+    #scanBtn:hover:not(:disabled) {
+      background: #5a4cd9;
+    }
+
+    #scanBtn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+
+    #results {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 8px;
+      display: none;
+    }
+
+    .success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    .loading {
+      background: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeaa7;
+    }
+
+    /* Scrollbar */
+    .main-content::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .main-content::-webkit-scrollbar-thumb {
+      background-color: #bbb;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <div class="logo">
+        <div class="grad-box"><i class="fas fa-graduation-cap"></i></div>
+      </div>
+      <nav class="nav-links">
+        <a href="index.html"><i class="fas fa-tachometer-alt"></i>HOME</a>
+        <a href="enroll.html"><i class="fas fa-book"></i>Enroll Student</a>
+        <a href="attendance.html" class="active"><i class="fas fa-calendar-check"></i>Attendance</a>
+        <a href="#"><i class="fas fa-users"></i>Student</a>
+        <a href="#"><i class="fas fa-clipboard-list"></i>Grades</a>
+        <a href="#"><i class="fas fa-sign-out-alt"></i>Logout</a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <header class="header">
+        <input type="search" placeholder="Search" class="search-input" />
+        <div class="profile">
+          <img src="https://i.pravatar.cc/150?u=angelou" alt="Profile" />
+          <div class="profile-info">
+            <div>Angelou Carpio</div>
+            <small>Adviser</small>
+          </div>
+        </div>
+      </header>
+
+      <section class="attendance-section">
+        <h2>Mark Attendance</h2>
+        <p>Position your face in front of the camera and click "Scan Face". Ensure good lighting and face the camera directly.</p>
+        <div id="videoContainer">
+          <video id="video" muted playsinline></video>
+        </div>
+        <button id="scanBtn" disabled>Loading...</button>
+        <div id="results"></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2" crossorigin="anonymous"></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" crossorigin="anonymous"></script>
+
+  <script>
+    const SUPABASE_URL = 'https://tyjadcqgnkodalptfsyr.supabase.co'; 
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR5amFkY3FnbmtvZGFscHRmc3lyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ3MDE5OTEsImV4cCI6MjA3MDI3Nzk5MX0.bXJWXH1nj8aTafoGHEJCOwdd9fPLzyVNBaeuXexlzmg';
+   
+   
+    const TWILIO_ACCOUNT_SID = 'YOUR_TWILIO_SID';
+    const TWILIO_PHONE_NUMBER = 'YOUR_TWILIO_PHONE_NUMBER'; 
+  
+
+    const video = document.getElementById('video');
+    const scanBtn = document.getElementById('scanBtn');
+    const results = document.getElementById('results');
+    let stream = null;
+    let studentEmbeddings = []; // Store embeddings for all students
+    let modelsLoaded = false;
+    let embeddingsLoaded = false;
+    let supabaseClient;
+
+    // Show results helper
+    function showResult(message, type = 'loading') {
+      results.textContent = message;
+      results.className = type;
+      results.style.display = 'block';
+    }
+
+    // Initialize Supabase client safely
+    function initSupabase() {
+      if (typeof supabase === 'undefined') {
+        throw new Error('Supabase library not loaded. Check script src.');
+      }
+      if (SUPABASE_URL === 'YOUR_SUPABASE_URL' || SUPABASE_ANON_KEY === 'YOUR_SUPABASE_ANON_KEY') {
+        throw new Error('Supabase credentials are not set. Please replace placeholder values.');
+      }
+      supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      console.log('Supabase client initialized.');
+    }
+
+    // Load face-api.js models (run once on page load)
+    async function loadModels() {
+      try {
+        const MODEL_URL = 'https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights';
+        
+        showResult('Loading face recognition models...', 'loading');
+        await Promise.race([
+          Promise.all([
+            faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
+            faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
+            faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL)
+          ]),
+          new Promise((_, reject) => setTimeout(() => reject(new Error('Model load timeout')), 30000)) // 30s timeout
+        ]);
+        
+        modelsLoaded = true;
+        console.log('Face-api models loaded successfully.');
+        showResult('Models loaded. Loading student data...', 'loading');
+      } catch (error) {
+        console.error('Model loading error:', error);
+        showResult(
+          `Error loading face recognition models: ${error.message}. ` +
+          `Fix: Download weights from https://github.com/justadudewhohacks/face-api.js/tree/master/weights ` +
+          `and host in a './models/' folder (set MODEL_URL = './models';). Use HTTPS/localhost.`,
+          'error'
+        );
+        throw error; // Stop initialization if models fail
+      }
+    }
+
+    // Get all students and their face embeddings (pre-compute for comparison)
+    async function loadStudentEmbeddings() {
+      try {
+        const { data: students, error } = await supabaseClient.from('students').select('*');
+        if (error) throw new Error(`Supabase error: ${error.message}`);
+
+        if (!students || students.length === 0) {
+          throw new Error('No students found. Please enroll students first via the Enroll page.');
+        }
+
+        studentEmbeddings = [];
+        let loadedCount = 0;
+        for (const student of students) {
+          if (student.face_image_url) {
+            try {
+              const img = await faceapi.fetchImage(student.face_image_url);
+              const detection = await faceapi
+                .detectSingleFace(img, new faceapi.TinyFaceDetectorOptions())
+                .withFaceLandmarks()
+                .withFaceDescriptor();
+              if (detection) {
+                studentEmbeddings.push({
+                  descriptor: detection.descriptor,
+                  student: student
+                });
+                loadedCount++;
+              } else {
+                console.warn(`No face detected in stored photo for student: ${student.email}`);
+              }
+            } catch (imgError) {
+              console.warn(`Error processing image for ${student.email}:`, imgError);
+            }
+          }
+        }
+        embeddingsLoaded = true;
+        console.log(`Loaded ${loadedCount} student embeddings out of ${students.length} total students.`);
+        if (loadedCount === 0) {
+          throw new Error('No valid student face data could be loaded. Please re-enroll students with clear face images.');
+        }
+        showResult(`Loaded ${loadedCount} students. Starting webcam...`, 'loading');
+      } catch (error) {
+        console.error('Embeddings loading error:', error);
+        showResult('Error loading student data: ' + error.message + '. Ensure students table has face_image_url.', 'error');
+        throw error;
+      }
+    }
+
+    // Start webcam
+    async function startWebcam() {
+      try {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+          throw new Error('Webcam not supported in this browser.');
+        }
+        stream = await navigator.mediaDevices.getUserMedia({ 
+          video: { 
+            facingMode: 'user', 
+            width: { ideal: 640 },
+            height: { ideal: 480 }
+          } 
+        });
+        video.srcObject = stream;
+        video.addEventListener('loadedmetadata', () => {
+          video.play().catch(e => console.warn('Video play warning:', e));
+        }, { once: true });
+        
+        scanBtn.textContent = 'Scan Face';
+        showResult('Webcam started. Position your face and scan.', 'success');
+        scanBtn.disabled = false; // Enable button only after everything is ready
+      } catch (error) {
+        console.error('Webcam error:', error);
+        showResult(
+          `Error accessing webcam: ${error.message}. ` +
+          `Fix: Grant camera permission, use HTTPS (or localhost), and ensure no other apps use the camera.`,
+          'error'
+        );
+        throw error;
+      }
+    }
+
+    // Capture frame from video and get face descriptor (embedding)
+    async function getCurrentEmbedding() {
+      if (!modelsLoaded) throw new Error('Face recognition models not loaded yet.');
+
+      const detections = await faceapi
+        .detectSingleFace(video, new faceapi.TinyFaceDetectorOptions())
+        .withFaceLandmarks()
+        .withFaceDescriptor();
+
+      if (!detections) {
+        throw new Error('No face detected. Please ensure your face is well-lit, centered, and facing the camera directly.');
+      }
+      return detections.descriptor;
+    }
+
+    // Find matching student using cosine similarity (via Euclidean distance approximation)
+    function findMatch(currentDescriptor) {
+      let bestMatch = null;
+      let bestScore = -1;
+      const threshold = 0.6; // Similarity threshold (0.4-0.7; higher = stricter match). Tune based on testing.
+
+      for (const { descriptor, student } of studentEmbeddings) {
+        const distance = faceapi.euclideanDistance(currentDescriptor, descriptor);
+        // face-api.js's euclideanDistance is not normalized. A distance of < 0.6 is a good match.
+        // We can invert and scale for a more intuitive "similarity" score if needed, but distance is fine.
+        if (distance < threshold && (bestMatch === null || distance < bestScore)) {
+          bestScore = distance;
+          bestMatch = { student, score: distance };
+        }
+      }
+      return bestMatch;
+    }
+
+    // Mark attendance, send notifications
+    async function markAttendance(studentId, student) {
+      try {
+        // 1. Log to Supabase attendance_logs
+        const { error: logError } = await supabaseClient
+          .from('attendance_logs')
+          .insert({ 
+            student_id: studentId, 
+            status: 'present' 
+          });
+
+        if (logError) throw new Error('Failed to log attendance: ' + logError.message);
+
+        const studentFullName = `${student.first_name} ${student.middle_name ? student.middle_name + ' ' : ''}${student.last_name}`.trim();
+
+        // 2. Send Email via Supabase Edge Function (Recommended)
+        if (student.email) {
+          supabaseClient.functions.invoke('send-attendance-email', {
+            body: { 
+              studentEmail: student.email, 
+              studentName: studentFullName
+            }
+          }).catch(error => console.warn('Email send warning (Edge Function may not be set up):', error.message));
+        }
+
+        // 3. Send SMS via Supabase Edge Function (Recommended)
+        if (student.phone_number && TWILIO_ACCOUNT_SID && TWILIO_PHONE_NUMBER) {
+            if (!/^\+?[1-9]\d{1,14}$/.test(student.phone_number.replace(/\D/g, ''))) {
+                console.warn('Invalid phone format for SMS:', student.phone_number);
+            } else {
+                const message = `Attendance confirmed for ${studentFullName} at ${new Date().toLocaleTimeString()}. Welcome!`;
+                supabaseClient.functions.invoke('send-attendance-sms', {
+                    body: {
+                        to: student.phone_number,
+                        body: message
+                    }
+                }).catch(error => console.warn('SMS send warning (Edge Function may not be set up):', error.message));
+            }
+        }
+      } catch (error) {
+        console.error('Error during attendance marking:', error);
+        // Re-throw to be caught by the main scan handler
+        throw error;
+      }
+    }
+    
+    // Main Scan Logic
+    async function handleScan() {
+        scanBtn.disabled = true;
+        showResult('Scanning... Please hold still.', 'loading');
+    
+        try {
+            const currentEmbedding = await getCurrentEmbedding();
+            const match = findMatch(currentEmbedding);
+    
+            if (match) {
+                const { student, score } = match;
+                const studentName = `${student.first_name} ${student.last_name}`;
+                showResult(`Match found: ${studentName} (Confidence: ${((1-score)*100).toFixed(2)}%). Marking attendance...`, 'success');
+                
+                await markAttendance(student.id, student);
+                showResult(`Attendance marked for ${studentName}.`, 'success');
+    
+            } else {
+                showResult('No match found. Please ensure you are an enrolled student or try again with better lighting.', 'error');
+            }
+    
+        } catch (error) {
+            console.error('Scan failed:', error);
+            showResult(`Scan failed: ${error.message}`, 'error');
+        } finally {
+            // Re-enable the button after a short delay to prevent spamming
+            setTimeout(() => {
+                scanBtn.disabled = false;
+            }, 2000);
+        }
+    }
+
+    // Initialization on page load
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        initSupabase();
+        await loadModels();
+        await loadStudentEmbeddings();
+        await startWebcam();
+      } catch (error) {
+        console.error('Initialization failed:', error);
+        // The error message is already shown on the UI by the failing function
+        scanBtn.textContent = 'Setup Failed';
+      }
+    });
+    
+    scanBtn.addEventListener('click', handleScan);
+    
+  </script>
+</body>
+</html>

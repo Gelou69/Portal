@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Dashboard - Enroll</title>
+  <!-- Remove external CSS link since styles are inline; add if you have a separate file -->
+</head>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f7f7fc;
+      color: #3b3b57;
+    }
+
+    .container {
+      display: flex;
+      height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      background: #6f5ef0;
+      width: 250px;
+      padding: 30px 20px;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .sidebar .logo {
+      margin-bottom: 40px;
+    }
+
+    .grad-box {
+      background: linear-gradient(135deg, #8c85f7, #8860ff);
+      width: 60px;
+      height: 60px;
+      border-radius: 14px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 28px;
+    }
+
+    .nav-links {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #b5b3df;
+      font-weight: 600;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 8px 15px;
+      border-radius: 7px;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .nav-links a i {
+      font-size: 18px;
+    }
+
+    .nav-links a.active,
+    .nav-links a:hover {
+      background: #7d6cf4;
+      color: white;
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      padding: 30px 40px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .search-input {
+      width: 280px;
+      padding: 12px 20px;
+      border-radius: 40px;
+      border: none;
+      outline: none;
+      font-size: 14px;
+      box-shadow: 0 0 15px rgb(93 93 95 / 12%);
+    }
+
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: white;
+      padding: 8px 12px;
+      border-radius: 50px;
+      box-shadow: 0 0 15px rgb(93 93 95 / 12%);
+    }
+
+    .profile img {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .profile-info {
+      display: flex;
+      flex-direction: column;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    /* Enrollment Form Styles */
+    .enrollment-section {
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 0 25px rgb(114 114 114 / 10%);
+    }
+
+    .enrollment-section h2 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: #3b3b57;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 600;
+      color: #555;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    .input-group input[type="file"] {
+      border: none;
+      padding: 8px;
+      background: #f8f9fa;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid #eee;
+      margin: 20px 0;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      background: #6f5ef0;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover:not(:disabled) {
+      background: #5a4cd9;
+    }
+
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+
+    #message {
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 15px;
+      display: none;
+    }
+
+    .success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    /* Scrollbar style for main content */
+    .main-content::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .main-content::-webkit-scrollbar-thumb {
+      background-color: #bbb;
+      border-radius: 10px;
+    }
+</style>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <div class="logo">
+        <div class="grad-box"><i class="fas fa-graduation-cap"></i></div>
+      </div>
+      <nav class="nav-links">
+        <a href="index.html"><i class="fas fa-tachometer-alt"></i>HOME</a>
+        <a href="enroll.html" class="active"><i class="fas fa-book"></i>Enroll Student</a>
+        <a href="attendance.html"><i class="fas fa-calendar-check"></i>Attendance</a>
+        <a href="#"><i class="fas fa-users"></i>Student</a>
+        <a href="#"><i class="fas fa-clipboard-list"></i>Grades</a>
+        <a href="#"><i class="fas fa-sign-out-alt"></i>Logout</a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <header class="header">
+        <input type="search" placeholder="Search" class="search-input" />
+        <div class="profile">
+          <img src="profile.jpg" alt="Profile" /> <!-- Replace with actual profile image -->
+          <div class="profile-info">
+            <div>Angelou Carpio</div>
+            <small>Adviser</small>
+          </div>
+        </div>
+      </header>
+
+      <!-- Enrollment Section -->
+      <section class="enrollment-section">
+        <h2>Student Enrollment</h2>
+        <form id="enrollmentForm">
+          <div class="input-group">
+            <label for="firstName">First Name *</label>
+            <input type="text" id="firstName" required>
+          </div>
+          <div class="input-group">
+            <label for="middleName">Middle Name</label>
+            <input type="text" id="middleName">
+          </div>
+          <div class="input-group">
+            <label for="lastName">Last Name *</label>
+            <input type="text" id="lastName" required>
+          </div>
+          <hr>
+          <div class="input-group">
+            <label for="phoneNumber">Phone Number</label>
+            <input type="tel" id="phoneNumber">
+          </div>
+          <div class="input-group">
+            <label for="email">Email *</label>
+            <input type="email" id="email" required>
+          </div>
+          <div class="input-group">
+            <label for="faceImage">Student Face Photo *</label>
+            <input type="file" id="faceImage" accept="image/*" required>
+          </div>
+          
+          <button type="submit" id="submitBtn">Enroll Student</button>
+          <div id="message"></div>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <!-- Font Awesome -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  
+  <!-- Supabase JS Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script type="module">
+
+    const SUPABASE_URL = 'https://tyjadcqgnkodalptfsyr.supabase.co'; 
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR5amFkY3FnbmtvZGFscHRmc3lyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ3MDE5OTEsImV4cCI6MjA3MDI3Nzk5MX0.bXJWXH1nj8aTafoGHEJCOwdd9fPLzyVNBaeuXexlzmg';
+    // ------------------------------------------------------------------
+
+    const { createClient } = supabase;
+    const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const form = document.getElementById('enrollmentForm');
+    const messageElement = document.getElementById('message');
+    const submitBtn = document.getElementById('submitBtn');
+
+    // Helper function to show messages
+    function displayMessage(text, isError = false) {
+      messageElement.textContent = text;
+      messageElement.className = isError ? 'error' : 'success';
+      messageElement.style.display = 'block';
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      // Disable button and show loading state
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Enrolling...';
+      displayMessage('Processing enrollment...', false);
+
+      // 1. Get form data
+      const firstName = document.getElementById('firstName').value.trim();
+      const middleName = document.getElementById('middleName').value.trim();
+      const lastName = document.getElementById('lastName').value.trim();
+      const phoneNumber = document.getElementById('phoneNumber').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const faceImageFile = document.getElementById('faceImage').files[0];
+
+      if (!faceImageFile) {
+        displayMessage('Please select a face image.', true);
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Enroll Student';
+        return;
+      }
+
+      const bucketName = 'student';
+      const fileExtension = faceImageFile.name.split('.').pop();
+      // Create a unique file path using a timestamp and the student's email
+      const filePath = `${email.replace(/[^a-z0-9]/gi, '_')}_${Date.now()}.${fileExtension}`;
+      let faceImageUrl = null;
+
+      try {
+
+        const { error: uploadError } = await supabaseClient.storage
+          .from(bucketName)
+          .upload(filePath, faceImageFile, {
+            cacheControl: '3600',
+            upsert: false
+          });
+
+        if (uploadError) {
+          throw new Error(`File upload failed: ${uploadError.message}`);
+        }
+
+
+        const { data: publicUrlData } = supabaseClient.storage
+          .from(bucketName)
+          .getPublicUrl(filePath);
+        
+        faceImageUrl = publicUrlData.publicUrl;
+
+        const { error: insertError } = await supabaseClient
+          .from('students') // Ensure your table is named 'students'
+          .insert({
+            first_name: firstName,
+            middle_name: middleName,
+            last_name: lastName,
+            phone_number: phoneNumber,
+            email: email,
+            face_image_url: faceImageUrl, // Store the public URL
+          });
+
+        if (insertError) {
+       
+          throw new Error(`Data insertion failed: ${insertError.message}`);
+        }
+
+        displayMessage('✅ Student successfully enrolled! You can check your Supabase tables.', false);
+        form.reset(); 
+        
+      } catch (error) {
+        console.error('Enrollment Error:', error);
+        displayMessage(`❌ Enrollment failed: ${error.message}`, true);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Enroll Student';
+      }
+    });
+
+    document.querySelectorAll('.finance-card').forEach(card => {
+      card.addEventListener('click', () => {
+        document.querySelectorAll('.finance-card').forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>

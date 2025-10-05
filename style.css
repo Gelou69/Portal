@@ -1,0 +1,338 @@
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #f7f7fc;
+  color: #3b3b57;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+  background: #6f5ef0;
+  width: 250px;
+  padding: 30px 20px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sidebar .logo {
+  margin-bottom: 40px;
+}
+
+.grad-box {
+  background: linear-gradient(135deg, #8c85f7, #8860ff);
+  width: 60px;
+  height: 60px;
+  border-radius: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 28px;
+}
+
+.nav-links {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #b5b3df;
+  font-weight: 600;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 15px;
+  border-radius: 7px;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.nav-links a i {
+  font-size: 18px;
+}
+
+.nav-links a.active,
+.nav-links a:hover {
+  background: #7d6cf4;
+  color: white;
+}
+
+/* Main Content */
+.main-content {
+  flex: 1;
+  padding: 30px 40px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.search-input {
+  width: 280px;
+  padding: 12px 20px;
+  border-radius: 40px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  box-shadow: 0 0 15px rgb(93 93 95 / 12%);
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: white;
+  padding: 8px 12px;
+  border-radius: 50px;
+  box-shadow: 0 0 15px rgb(93 93 95 / 12%);
+}
+
+.profile img {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* Welcome Section */
+.welcome-section {
+  background: linear-gradient(90deg, #885efa 0%, #6941fe 100%);
+  border-radius: 16px;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 40px;
+  box-shadow: 0 19px 40px rgb(134 110 234 / 30%);
+}
+
+.welcome-text .date {
+  font-size: 12px;
+  opacity: 0.8;
+  margin-bottom: 6px;
+}
+
+.welcome-text h1 {
+  font-size: 32px;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.welcome-text p {
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+.welcome-illustration img {
+  width: 180px;
+  height: auto;
+}
+
+/* Finance Section */
+.finance-section {
+  display: flex;
+  gap: 32px;
+}
+
+.finance-card {
+  background: white;
+  box-shadow: 0 0 25px rgb(114 114 114 / 10%);
+  border-radius: 14px;
+  padding: 22px 40px;
+  text-align: center;
+  flex: 1;
+  cursor: pointer;
+  transition: box-shadow 0.3s ease;
+}
+
+.finance-card:hover {
+  box-shadow: 0 0 25px rgb(114 114 114 / 22%);
+}
+
+.finance-card.active {
+  border: 2px solid #6f5ef0;
+  box-shadow: 0 0 25px rgb(111 94 240 / 55%);
+}
+
+.finance-card .icon img {
+  width: 48px;
+  margin-bottom: 14px;
+}
+
+.finance-card .amount {
+  font-weight: 700;
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+
+.finance-card .label {
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+/* Courses Section */
+.courses-section {
+  background: none;
+}
+
+.courses-section h2 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.courses-section h2 a {
+  font-weight: 500;
+  font-size: 14px;
+  color: #6f5ef0;
+  text-decoration: none;
+}
+
+.courses {
+  display: flex;
+  gap: 24px;
+}
+
+.course-card {
+  background: #ae9cfd;
+  border-radius: 20px;
+  padding: 28px 40px;
+  position: relative;
+  box-shadow: 0 18px 40px rgb(130 98 255 / 35%);
+  color: white;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.course-card h3 {
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+
+.course-card button {
+  padding: 10px 22px;
+  width: fit-content;
+  border-radius: 36px;
+  font-weight: 600;
+  border: none;
+  background: #776ef2;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 18px 30px rgb(130 98 255 / 45%);
+  transition: background-color 0.3s ease;
+}
+
+.course-card button:hover {
+  background: #684be9;
+}
+
+/* Aside Info Section */
+.aside-info {
+  display: flex;
+  flex-direction: column;
+  width: 280px;
+  gap: 30px;
+}
+
+.course-instructors h3 {
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.instructor-list {
+  display: flex;
+  gap: 15px;
+}
+
+.instructor-list img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 18px 40px rgb(130 98 255 / 30%);
+}
+
+/* Daily Notice */
+.daily-notice h3 {
+  font-weight: 600;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #3b3b57;
+}
+
+.daily-notice h3 a {
+  font-weight: 500;
+  font-size: 14px;
+  color: #6f5ef0;
+  text-decoration: none;
+}
+
+.notice-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.notice-item strong {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.notice-item p {
+  font-size: 14px;
+  color: #686868;
+}
+
+.notice-item a {
+  font-size: 14px;
+  font-weight: 600;
+  color: #6f5ef0;
+  text-decoration: none;
+}
+
+/* Scrollbar style for main content */
+.main-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.main-content::-webkit-scrollbar-thumb {
+  background-color: #bbb;
+  border-radius: 10px;
+}
